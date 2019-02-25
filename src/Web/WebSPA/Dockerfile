@@ -1,4 +1,4 @@
-ARG NODE_IMAGE=node:8.11
+ARG NODE_IMAGE=stefanscherer/node-windows:8.11
 FROM microsoft/dotnet:2.1-aspnetcore-runtime AS base
 WORKDIR /app
 EXPOSE 80
@@ -8,15 +8,15 @@ WORKDIR /src
 
 FROM ${NODE_IMAGE} as node-build
 WORKDIR /web
-COPY src/Web/WebSPA .
-RUN npm install
-RUN npm run build:prod
+# COPY src/Web/WebSPA .
+# RUN npm install
+# RUN npm run build:prod
 
 FROM dotnet-build as publish
-WORKDIR /src/src/Web/WebSPA/wwwroot
-COPY --from=node-build /web/wwwroot .
-WORKDIR /src
-COPY . .
+# WORKDIR /src/src/Web/WebSPA/wwwroot
+# COPY --from=node-build /web/wwwroot .
+# WORKDIR /src
+# COPY . .
 WORKDIR /src/src/Web/WebSPA
 RUN dotnet publish -c Release -o /app
 
